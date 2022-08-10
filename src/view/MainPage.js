@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 
 export default function MainPage() {
     return(
-        <Container>
+        <Container style={{overflow:'hidden'}}>
             <Row>
                 <Col sm={0} xl={3}>
                     <p style={{textAlign : 'center', background: 'LightCyan'}}>status bar</p>
