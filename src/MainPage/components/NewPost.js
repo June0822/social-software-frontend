@@ -30,12 +30,46 @@ export default function NewPost({setData}) {
 
     const [content, setContent] = useState("");
 
+    const delay = (n) => new Promise( r => setTimeout(r, n*1000));
+
     function contentChange(e) {
         setContent(e.target.value)
     }
 
     function AddPost() {
-        setData({content})
+        fetch(process.env.REACT_APP_API+'Post',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json',
+                'Accept':'application/json'
+            },
+            body:JSON.stringify({
+                PostId : 1,
+                Content : content,
+                Owner : 1,
+                CreateDate : 'now'
+            })
+        })
+        .then(res => res.json())
+        .then(result => {
+            alert("Post succeed")
+        },
+        (expect) => {
+            alert('Post failed');
+        })
+        .then( async () => {
+            await delay(1);
+            fetch(process.env.REACT_APP_API+'Post')
+            .then(res => res.json())
+            .then(data => {
+                // console.log(data)
+                setData(data)})
+            }
+        ).then(
+            setContent('')
+        )
+
+
     }
 
     return (

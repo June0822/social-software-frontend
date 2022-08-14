@@ -1,4 +1,4 @@
-import React, { useEffect, useState }  from "react";
+import React, { useEffect, useState, useRef }  from "react";
 import AddPost from "./components/AddPost";
 import PostsList from "./components/PostList";
 
@@ -9,8 +9,7 @@ export default function MainPage() {
     const getData = () => {
         fetch(process.env.REACT_APP_API+'Post')
         .then(res => res.json())
-        .then(data => {
-            setData(data)})
+        .then(data => setData(data))
     };
 
     useEffect(() => {
@@ -19,7 +18,7 @@ export default function MainPage() {
 
     return (
         <div>
-            <AddPost setData={setData}/>
+            <AddPost setData={setData} />
             <PostsList data={data}/>
         </div>
     );
