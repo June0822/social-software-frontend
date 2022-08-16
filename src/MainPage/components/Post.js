@@ -35,15 +35,15 @@ function CalculateTimeDiff(Hours) {
 
     switch (true) {
         case (Days>=365) :
-            num = Days/365;
+            num = Math.floor(Days/365);
             string =  num < 1 ? " year ago" : " years ago"
             return (num+string)
         case (Days>=31) :
-            num = Days/31;
+            num = Math.floor(Days/31);
             string =  num < 1 ? " month ago" : " months ago"
             return (num+string)
         case (Days>=7) :
-            num = Days/7;
+            num = Math.floor(Days/7);
             string =  num < 1 ? " week ago" : " weeks ago"
             return (num+string)
         case (Days>=1) :
