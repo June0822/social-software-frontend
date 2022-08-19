@@ -2,6 +2,7 @@ import styled from "styled-components"
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useState } from "react";
+import { getAuthToken } from "../../Login/components/Cookies";
 
 const Input = styled.textarea`
     resize: none;
@@ -26,7 +27,7 @@ const SubmitBtn = styled.button`
     font-size: 18px;
 `
 
-export default function NewPost({setData}) {
+export default function NewPost({setData, user}) {
 
     const [content, setContent] = useState("");
 
@@ -41,12 +42,13 @@ export default function NewPost({setData}) {
             method:'POST',
             headers:{
                 'Content-Type':'application/json',
-                'Accept':'application/json'
+                'Accept':'application/json',
+                'Authorization': ('Bearer ' + getAuthToken())
             },
             body:JSON.stringify({
                 PostId : 1,
                 Content : content,
-                Owner : 1,
+                Owner : user,
                 CreateDate : 'now'
             })
         })
@@ -59,7 +61,14 @@ export default function NewPost({setData}) {
         })
         .then( async () => {
             await delay(1);
-            fetch(process.env.REACT_APP_API+'Post')
+            fetch(process.env.REACT_APP_API+'Post',{
+                method:'GET',
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': ('Bearer ' + getAuthToken())
+                }
+            })
             .then(res => res.json())
             .then(data => {
                 // console.log(data)

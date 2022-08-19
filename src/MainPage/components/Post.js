@@ -3,14 +3,14 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import '../main.css';
 
-const Owner_ = styled.div`
+const MyOwner = styled.div`
     font-family: 'Trebuchet MS', sans-serif;
     font-size: 20px;
     font-weight : bold;
     width:20%;
 `
 
-const Contnet_ = styled.div`
+const MyContent = styled.div`
     min-height : 30px;
 `
 
@@ -21,7 +21,7 @@ const Icon = styled.img`
     height: 15px;
 `
 
-const PostTime_ = styled.span`
+const MyPostTime = styled.span`
     display:  flex;
     align-items: center;
     width:80%;
@@ -64,10 +64,10 @@ export default function Post({PostId, UserName, Content, CreateDate, CreateTime,
                 </Col>
                 <Col>
                     <Row>
-                        <Owner_>{UserName}</Owner_>
-                        <PostTime_>- {CalculateTimeDiff(TimeDiff)}</PostTime_>
+                        <MyOwner>{UserName}</MyOwner>
+                        <MyPostTime>- {CalculateTimeDiff(TimeDiff)}</MyPostTime>
                     </Row>
-                    <Contnet_>{Content}</Contnet_>
+                    <MyContent>{Content}</MyContent>
                     <div>
                         <Icon src={process.env.PUBLIC_URL + '/icon/chat.png'}/>
                         <Icon src={process.env.PUBLIC_URL + '/icon/heart.png'}/>

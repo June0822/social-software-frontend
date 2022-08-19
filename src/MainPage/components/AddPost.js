@@ -7,12 +7,12 @@ const Title = styled.p`
     font-weight : bold;
 `
 
-export default function AddPost({setData}) {
+export default function AddPost({setData, user}) {
     return(
         <div className='d-flex justify-content-center'>
             <div className="post">
                 <Title>Home</Title>
-                <NewPost setData={setData}/>
+                <NewPost setData={setData} user={user}/>
             </div>   
         </div>
     )
