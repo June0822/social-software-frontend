@@ -8,6 +8,7 @@ const MyFollowArea = styled.div`
     height: 70px;
     margin-left: 10px;
     margin-right: 10px;
+    border-top: 2px solid gray;
 `
 
 const MyOwner = styled.div`
@@ -28,21 +29,40 @@ const FollowBtn = styled.button`
     font-size: 14px;
 `
 
-function FollowBtnClick () {
-    fetch(process.env.REACT_APP_API+'Follower',{
-        method:'POST',
-        headers:{
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': ('Bearer ' + getAuthToken())
-        },
-        body:{
-            
-        }
-    })
-}
 
-export default function ({UsertId, UserName, isFollow}) {
+export default function ({UserId, UserName, isFollow, User, setUsers}) {
+    
+    const delay = (n) => new Promise( r => setTimeout(r, n*1000));
+
+    function FollowBtnClick () {
+        fetch(process.env.REACT_APP_API+'Follower',{
+            method:'POST',
+            headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': ('Bearer ' + getAuthToken())
+            },
+            body:JSON.stringify({
+                Active: User,
+                Passive: UserId,
+                Action: (isFollow=='Y' ? 'Unfollow' : 'Follow')
+            })
+        })
+        .then(res => res.json())
+        .then( async () => {
+            await delay(1);
+            fetch(process.env.REACT_APP_API+'Follower',{
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'accept': 'application/json',
+                    'Authorization': ('Bearer ' + getAuthToken())
+                }
+            })
+            .then(res => res.json())
+            .then(data => setUsers(data))
+        })
+    }
     return(
         <MyFollowArea>
             <img className='img' src={process.env.REACT_APP_IMG_PATH+'Black_color.png'}/>

@@ -7,6 +7,7 @@ import Profile from "../Profile/Profile"
 import SideNavbar from "../MainPage/components/SideNavbar";
 import Login from "../Login/Login";
 import FollowList from "../FollowList/FollowList";
+import Setting from "../Setting/Setting";
 
 import { Container } from "react-bootstrap";
 import Row from 'react-bootstrap/Row';
@@ -29,7 +30,6 @@ export default function Home() {
                 <Row>
                     <Col sm={0} xl={3}>
                         <SideNavbar />
-                        {/* <p style={{textAlign : 'center', background: 'LightCyan'}}>status bar</p> */}
                     </Col>
                     <Col sm={12} xl={6}>
                         <Routes>
@@ -37,12 +37,12 @@ export default function Home() {
                             <Route exact path='/notification' element={<Notification/>} />
                             <Route exact path='/chat' element={<Chat/>} />
                             <Route exact path='/profile' element={<Profile/>} />
+                            <Route exact path='/setting' element={<Setting/>} />
                         </Routes>
                         
                     </Col>
                     <Col sm={0} xl={3}>
-                        <FollowList />
-                        {/* <p style={{textAlign : 'center', background: 'Cornsilk'}}>friends</p> */}
+                        <FollowList User={user}/>
                     </Col>
                 </Row>
             </Container>

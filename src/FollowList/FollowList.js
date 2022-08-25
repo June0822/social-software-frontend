@@ -7,11 +7,12 @@ const MyFollowList = styled.div`
     margin-top: 10px;
     border: solid 1px LightGray;
     text-align: center;
+    background-color: WhiteSmoke;
 `
 
-export default function FollowList() {
+export default function FollowList({User}) {
 
-    const [users, SetUsers] = useState([]);
+    const [users, setUsers] = useState([]);
 
     const getData = () => {
         fetch(process.env.REACT_APP_API+'Follower',{
@@ -23,7 +24,7 @@ export default function FollowList() {
             }
         })
         .then(res => res.json())
-        .then(data => SetUsers(data))
+        .then(data => setUsers(data))
     }
 
     useEffect(() => {
@@ -32,11 +33,11 @@ export default function FollowList() {
 
     return(
         <MyFollowList>
-            <p>Who you want to follow</p>
+            <p style={{fontFamily: "'Trebuchet MS', sans-serif", fontSize: "20px"}}>Who you want to follow</p>
             {
                 users.map( item => {
-                    const { UsertId, UserName, isFollow} = item;
-                    return <Follower key={UsertId} UsertId={UsertId} UserName={UserName} isFollow={isFollow}/>
+                    const { UserId, UserName, isFollow} = item;
+                    return <Follower key={UserId} UserId={UserId} UserName={UserName} isFollow={isFollow} User={User} setUsers={setUsers}/>
                 })
             }
         </MyFollowList>
