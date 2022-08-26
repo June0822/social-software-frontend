@@ -1,4 +1,9 @@
+import { useState } from "react";
 import styled from "styled-components";
+
+import "../main.css"
+
+import EditProfile from "./EditProfile";
 
 const CoverPhoto = styled.img`
     position:absolute;
@@ -53,13 +58,20 @@ const MyFollowBar = styled.div`
     font-weight : bold;
 `
 export default function PersonalInfo () {
+
+    const [editProfileShow, setEditProfileShow] = useState(false);
+
+    const handleShow = () => setEditProfileShow(true);
+    const handleClose = () => setEditProfileShow(false);
+
     return(
         <div>
             <div style={{height:"30px"}}></div>
             <div style={{position: "relative", height: "270px"}}>
                 <CoverPhoto src={process.env.REACT_APP_IMG_PATH+'CoverPhoto1.png'} />
                 <ProPhoto src={process.env.REACT_APP_IMG_PATH+'ProPhoto1.png'}/>
-                <BtnArea><EditBtn>Edit profile</EditBtn></BtnArea>
+                <BtnArea><EditBtn onClick={handleShow}>Edit profile</EditBtn></BtnArea>
+                <EditProfile show={editProfileShow} handleClose={handleClose} />
             </div>
             <MyProfile>
                 <MyUser>User1</MyUser>
