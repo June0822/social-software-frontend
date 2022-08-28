@@ -36,7 +36,7 @@ export default function Home() {
                             <Route exact path='/home' element={<PostsList user={user}/>} />
                             <Route exact path='/notification' element={<Notification/>} />
                             <Route exact path='/chat' element={<Chat/>} />
-                            <Route exact path='/profile' element={<Profile/>} />
+                            <Route exact path='/profile' element={<Profile user={user}/>} />
                             <Route exact path='/setting' element={<Setting/>} />
                         </Routes>
                         
