@@ -2,7 +2,7 @@
   "name": "social-software-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://june0822.github.io/social-software-frontend",
+  "homepage": "https://june0822.github.io/social-software-frontend",
   "dependencies": {
     "@material-ui/styles": "^4.11.5",
     "@testing-library/jest-dom": "^5.14.1",
