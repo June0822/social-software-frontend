@@ -2,7 +2,7 @@
   "name": "social-software-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://June0822.github.io/social-software-frontend",
+  "homepage": "http://june0822.github.io/social-software-frontend",
   "dependencies": {
     "@material-ui/styles": "^4.11.5",
     "@testing-library/jest-dom": "^5.14.1",
@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^13.2.1",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.0",
+    "gh-pages": "^4.0.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-dom": "^18.2.0",
