@@ -7,7 +7,7 @@ const Title = styled.p`
     font-weight : bold;
 `
 
-export default function AddPost({setData, user}) {
+export default function AddPost({setData, user, ProfilePhotoSrc}) {
     return(
         <div className='d-flex justify-content-center'>
             <div className="post">

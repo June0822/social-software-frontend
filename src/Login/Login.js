@@ -10,6 +10,7 @@ const LoginWrapper = styled.div`
 `
 
 async function loginUser(credentials) {
+    console.log(process.env.REACT_APP_API);
     return fetch(process.env.REACT_APP_API+'Auth/login', {
         method: 'POST',
         headers: {
@@ -18,6 +19,7 @@ async function loginUser(credentials) {
         },
         body: JSON.stringify(credentials)
     }).then(data => {
+        console.log(data)
         return data.json();
     })
 }
@@ -38,6 +40,7 @@ export default function Login({ setToken, setUser}) {
             return
         }
         else {
+            console.log("token:"+token)
             setMyToken(token);
             setUser(username);
             setToken(token);

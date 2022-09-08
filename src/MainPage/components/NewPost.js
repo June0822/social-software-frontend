@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getAuthToken } from "../../Login/components/Cookies";
 
 const Input = styled.textarea`
@@ -30,6 +30,24 @@ const SubmitBtn = styled.button`
 export default function NewPost({setData, user}) {
 
     const [content, setContent] = useState("");
+    const [profilePhotoSrc, setProfilePhotoSrc] = useState("Black_color.png")
+
+    const getPhotoSrc = () => {
+        fetch(process.env.REACT_APP_API+'Profile', {
+            method: 'GET', 
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': ('Bearer ' + getAuthToken())
+            }
+        })
+        .then(res => res.json())
+        .then(res => setProfilePhotoSrc(res[0].ProfilePhotoSrc))
+    }
+
+    useEffect(() => {
+        getPhotoSrc()
+    },[]);
 
     const delay = (n) => new Promise( r => setTimeout(r, n*1000));
 
@@ -85,7 +103,7 @@ export default function NewPost({setData, user}) {
         <div>
             <Row>
                 <Col xs={1} style={{minWidth:'50px', marginRight:'10px'}}>
-                    <img className="img" src={process.env.REACT_APP_IMG_PATH+'Black_color.png'}/>
+                    <img className="img" src={process.env.REACT_APP_IMG_PATH+profilePhotoSrc}/>
                 </Col>
                 <Col>
                     <Input type="text" rows="3" cols="50" maxLength="150" minLength="1" placeholder="How's your day?" value={content} onChange={contentChange} />

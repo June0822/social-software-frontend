@@ -36,8 +36,8 @@ export default function FollowList({User}) {
             <p style={{fontFamily: "'Trebuchet MS', sans-serif", fontSize: "20px"}}>Who you want to follow</p>
             {
                 users.map( item => {
-                    const { UserId, UserName, isFollow} = item;
-                    return <Follower key={UserId} UserId={UserId} UserName={UserName} isFollow={isFollow} User={User} setUsers={setUsers}/>
+                    const { UserId, UserName, isFollow, ProfilePhotoSrc} = item;
+                    return <Follower key={UserId} UserId={UserId} UserName={UserName} isFollow={isFollow} User={User} setUsers={setUsers} ProfilePhotoSrc={ProfilePhotoSrc===null ? 'Black_color.png' : ProfilePhotoSrc}/>
                 })
             }
         </MyFollowList>

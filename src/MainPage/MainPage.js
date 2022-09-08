@@ -26,8 +26,8 @@ export default function MainPage({user}) {
 
     return (
         <div>
-            <AddPost setData={setData} user={user}/>
-            <PostsList data={data}/>
+            <AddPost setData={setData} user={user} />
+            <PostsList data={data} />
         </div>
     );
 };

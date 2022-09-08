@@ -30,7 +30,7 @@ const FollowBtn = styled.button`
 `
 
 
-export default function ({UserId, UserName, isFollow, User, setUsers}) {
+export default function ({UserId, UserName, isFollow, User, setUsers, ProfilePhotoSrc}) {
     
     const delay = (n) => new Promise( r => setTimeout(r, n*1000));
 
@@ -65,7 +65,7 @@ export default function ({UserId, UserName, isFollow, User, setUsers}) {
     }
     return(
         <MyFollowArea>
-            <img className='img' src={process.env.REACT_APP_IMG_PATH+'Black_color.png'}/>
+            <img className='img' src={process.env.REACT_APP_IMG_PATH+ProfilePhotoSrc}/>
             <MyOwner>{UserName}</MyOwner>
             <div style={{width:"50%"}}>
                 <FollowBtn isFollow={isFollow=='Y'} onClick={FollowBtnClick}>&nbsp;{isFollow=='Y' ? 'Following' : 'Follow'}&nbsp;</FollowBtn>
