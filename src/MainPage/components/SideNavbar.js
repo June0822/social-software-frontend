@@ -30,34 +30,34 @@ const NavLinkStyle = {
 }
 
 
-export default function SideNavbar () {
+export default function SideNavbar ({user}) {
 
     const [status, setStatus] = useState([true, false, false, false, false]);
 
     return (
         <MyDiv>
             <Nav className="flex-column">
-                <NavLink to="/home" style={NavLinkStyle} onClick={() => setStatus([true, false, false, false, false])}>
+                <NavLink to={user+'/home'} style={NavLinkStyle} onClick={() => setStatus([true, false, false, false, false])}>
                     <MySpan props={status[0]}>
                         <HomeIcon/>&emsp;&emsp;Home
                     </MySpan>
                 </NavLink>
-                <NavLink to="/notification" style={NavLinkStyle} onClick={() => setStatus([false, true, false, false, false])}>
+                <NavLink to={user+'/notification'} style={NavLinkStyle} onClick={() => setStatus([false, true, false, false, false])}>
                     <MySpan props={status[1]}>
                         <NotificationIcon />&emsp;&emsp;Notifications
                     </MySpan>
                 </NavLink>
-                <NavLink to="/chat" style={NavLinkStyle} onClick={() => setStatus([false, false, true, false, false])}>
+                <NavLink to={user+'/chat'} style={NavLinkStyle} onClick={() => setStatus([false, false, true, false, false])}>
                     <MySpan props={status[2]}>
                         <ChatIcon />&emsp;&emsp;Messages
                     </MySpan>
                 </NavLink>
-                <NavLink to="/profile" style={NavLinkStyle} onClick={() => setStatus([false, false, false, true, false])}>
+                <NavLink to={user+'/profile'} style={NavLinkStyle} onClick={() => setStatus([false, false, false, true, false])}>
                     <MySpan props={status[3]}>
                         <ProfileIcon />&emsp;&emsp;Profile
                     </MySpan>
                 </NavLink>
-                <NavLink to="/setting" style={NavLinkStyle} onClick={() => setStatus([false, false, false, false, true])}>
+                <NavLink to={user+'/setting'} style={NavLinkStyle} onClick={() => setStatus([false, false, false, false, true])}>
                     <MySpan props={status[4]}>
                         <SettingIcon />&emsp;&emsp;Setting
                     </MySpan>

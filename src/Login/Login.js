@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Alert } from 'react-bootstrap';
 import styled from 'styled-components';
 import {setMyToken} from './components/Cookies'
+import { HubConnectionBuilder } from '@microsoft/signalr';
+import { useNavigate  } from "react-router-dom";
 
 const LoginWrapper = styled.div`
     display: flex;
@@ -24,10 +26,12 @@ async function loginUser(credentials) {
     })
 }
 
-export default function Login({ setToken, setUser}) {
+export default function Login({ setToken, setUser, setConnection}) {
 
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
+
+    const navigate = useNavigate();
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -45,6 +49,15 @@ export default function Login({ setToken, setUser}) {
             setUser(username);
             setToken(token);
         }
+        const newConnection = new HubConnectionBuilder()
+            .withUrl('https://localhost:7248/chatHub')
+            .withAutomaticReconnect()
+            .build();
+
+        setConnection(newConnection);
+
+        console.log(username+"  "+typeof(username));
+        navigate('/'+username+'/home');
     }
 
     return(
