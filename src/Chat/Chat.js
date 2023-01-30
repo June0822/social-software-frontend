@@ -1,50 +1,23 @@
-// import styled from "styled-components";
-
-// import DialogWindow from "./components/DialogWindow";
-
-// export default function Chat () {
-//     return(
-//         <div>
-//             <DialogWindow/>
-//         </div>
-//     );
-// }
 import React, { useState, useEffect, useRef } from 'react';
+import styled from 'styled-components';
 
 import ChatWindow from './components/ChatWindow';
 import ChatInput from './components/ChatInput';
 
-const Chat = ({User, connection, myChat, latestChat}) => {
-    
-    latestChat.current = myChat;
+const MyChat = styled.div`
+    height: 100%;
+    border: solid 1px LightGray;
+    background: #F5F5F5;
+`
 
+const Chat = ({User, AllMessage, receiver, newMessage, isReaded, setIsReaded}) => {
 
-    const sendMessage = async (user, message) => {
-        const chatMessage = {
-            User: user,
-            Receiver: 'User2',
-            Message: message
-        };
-        try {
-            await  fetch(process.env.REACT_APP_API+'chat/messages', { 
-            method: 'POST', 
-            body: JSON.stringify(chatMessage),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    }
 
     return (
-        <div>
-            <ChatInput sendMessage={sendMessage} />
-            <hr />
-            <ChatWindow chat={myChat}/>
-        </div>
+        <MyChat >
+            <ChatWindow User={User} AllMessage={AllMessage} receiver={receiver} newMessage={newMessage} isReaded={isReaded}/>
+            <ChatInput  User={User} receiver={receiver} setIsReaded={setIsReaded}/>
+        </MyChat>
     );
 };
 

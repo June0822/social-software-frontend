@@ -16,6 +16,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 // import Login from "../components/Login";
 import { HashRouter , Route, Routes } from "react-router-dom";
+import { ConsoleLogger } from "@microsoft/signalr/dist/esm/Utils";
 
 
 export default function Home() {
@@ -23,10 +24,20 @@ export default function Home() {
     const [token, setToken] = useState();
     const [user, setUser] = useState();
 
-    const [ connection, setConnection ] = useState(null);
-    const [ chat, setChat ] = useState([]);
-    const latestChat = useRef(null);
+    const [connection, setConnection ] = useState(null);
+    const [chat, setChat ] = useState([]);
 
+    const [receiver, setReceiver] = useState({
+        ReceiverName: 'Chat',
+        PhotoSrc: ''
+    });
+
+    const [isReaded, setIsReaded] = useState(true);
+    const [newMessage, setNewMessage] = useState([]);
+    const [lastMessage, setLastMessage] = useState({
+        ReceiverName: 'Chat',
+        Message: ''
+    }); 
 
     useEffect(() => {
         if (connection) {
@@ -34,12 +45,6 @@ export default function Home() {
                 .then(result => {
                     console.log('Connected!  Connection ID: ' + connection.connectionId);
     
-                    connection.on('ReceiveMessage', message => {
-                        const updatedChat = [...latestChat.current];
-                        updatedChat.push(message);
-                    
-                        setChat(updatedChat);
-                    });
                 }).then(() => {
                         fetch(process.env.REACT_APP_API+'chat/AddConnectionId', { 
                             method: 'POST', 
@@ -54,7 +59,36 @@ export default function Home() {
                 
 
         }
-    }, [connection]);
+    }, [connection, receiver]);
+
+    if (connection) {
+        connection.on('ReceiveMessage', message => {
+            const jsonMessage = JSON.stringify(message.user).replaceAll('"', ''); //{"user":"XXX","receiver":"XXX","message":"XXX"}
+
+            if(jsonMessage===receiver.ReceiverName || jsonMessage===user){
+
+                if(jsonMessage===receiver.ReceiverName) {
+                    setIsReaded(true)
+                };
+                
+                const tempMessage = {
+                    User: jsonMessage===receiver.ReceiverName ? user : receiver.ReceiverName,
+                    Receiver: jsonMessage===receiver.ReceiverName ? receiver.ReceiverName : user,
+                    Message: ''
+                }
+                fetch(process.env.REACT_APP_API+'chat/GetChatRecord', {           
+                    method: 'POST', 
+                    body: JSON.stringify(tempMessage),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(res => res.json())
+                .then(data => setChat(data))
+            }
+
+        });
+    }
 
     if (!token) {
         return <HashRouter><Login setToken={setToken} setUser={setUser} setConnection={setConnection}/></HashRouter>
@@ -71,7 +105,7 @@ export default function Home() {
                         <Routes>
                             <Route exact path={user+'/home'} element={<PostsList user={user}/>} />
                             <Route exact path={user+'/notification'} element={<Notification/>} />
-                            <Route exact path={user+'/chat'} element={<Chat User={user} connection={connection} myChat={chat} latestChat={latestChat}/>} />
+                            <Route exact path={user+'/chat'} element={<Chat User={user} AllMessage={chat} receiver={receiver} newMessage={newMessage} isReaded={isReaded} setIsReaded={setIsReaded}/>} />
                             <Route exact path={user+'/profile'} element={<Profile user={user}/>} />
                             <Route exact path={user+'/setting'} element={<Setting setToken={setToken} user={user} connection={connection}/>} />
                         </Routes>
@@ -80,7 +114,7 @@ export default function Home() {
                         <Routes>
                             <Route exact path={user+'/home'} element={<FollowList User={user}/>} />
                             <Route exact path={user+'/notification'} element={<FollowList User={user}/>} />
-                            <Route exact path={user+'/chat'} element={<ContactList />} />
+                            <Route exact path={user+'/chat'} element={<ContactList User={user} chat={chat}setChat={setChat} setReceiver={setReceiver} />} />
                             <Route exact path={user+'/profile'} element={<FollowList User={user}/>} />
                             {/* <Route exact path='/setting' element={<Setting/>} /> */}
                         </Routes>

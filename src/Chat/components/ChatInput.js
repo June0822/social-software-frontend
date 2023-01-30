@@ -1,53 +1,85 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 
-const ChatInput = (props) => {
-    const [user, setUser] = useState('');
-    const [message, setMessage] = useState('');
+import { BiSend } from "react-icons/bi";
 
-    const onSubmit = (e) => {
-        e.preventDefault();
+const MyChatInput = styled.div`
+    display: flex;
+    height: 10%;
+    align-items: center;
+`
+const MySpan = styled.span`
+    color: black;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+        color: #8FBC8B;
+    };
+`
+const Input = styled.input`
+    background: #ffffff;
+    cursor: text;
+    height: 50%;
+    width: 90%;
+    border-radius: 20px 20px 20px 20px;
+    border: 1px soild;
+    margin-left: 15px;
+    padding-left: 10px;
+    &:focus {
+        outline: none;
+    }
+`
 
-        const isUserProvided = user && user !== '';
-        const isMessageProvided = message && message !== '';
+const ChatInput = ({User, receiver, setIsReaded}) => {
 
-        if (isUserProvided && isMessageProvided) {
-            props.sendMessage(user, message);
+    const [content, setContent] = useState('');
+
+    const contentChange = (e) => {
+        setContent(e.target.value)
+    }
+
+    const setNOU = () => {
+        const tempMessage = {
+            User: User,
+            Receiver: receiver.ReceiverName,
+            Message: ''
         } 
-        else {
-            alert('Please insert an user and a message.');
+        fetch(process.env.REACT_APP_API+'chat/SetNOU', { 
+            method: 'POST', 
+            body: JSON.stringify(tempMessage),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+    const handleClick = () => {
+        if(content.length==0) {
+            alert('please write something');
+            return;
         }
-    }
-
-    const onUserUpdate = (e) => {
-        setUser(e.target.value);
-    }
-
-    const onMessageUpdate = (e) => {
-        setMessage(e.target.value);
+        const tempMessage = {
+            User: User,
+            Receiver: receiver.ReceiverName,
+            Message: content
+        }
+        fetch(process.env.REACT_APP_API+'chat/messages', { 
+            method: 'POST', 
+            body: JSON.stringify(tempMessage),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(setContent(''))
+        .then(setNOU())
+        .then(setIsReaded(false));
     }
 
     return (
-        <form 
-            onSubmit={onSubmit}>
-            <label htmlFor="user">User:</label>
-            <br />
-            <input 
-                id="user"
-                name="user"
-                value={user}
-                onChange={onUserUpdate} />
-            <br/>
-            <label htmlFor="message">Message:</label>
-            <br />
-            <input 
-                type="text"
-                id="message"
-                name="message"
-                value={message}
-                onChange={onMessageUpdate} />
-            <br/><br/>
-            <button>Submit</button>
-        </form>
+        <MyChatInput>
+            <Input type="text" maxLength="150" minLength="1" placeholder="write something ..." value={content} onChange={contentChange}/>
+            <MySpan><BiSend onClick={handleClick}/></MySpan>
+        </MyChatInput>
     )
 };
 

@@ -10,7 +10,7 @@ border: solid 1px LightGray;
 height: 100vh;
 `
 
-const ContactList = () => {
+const ContactList = ({User, setChat, chat, setReceiver, lastMessage, setLastMessage}) => {
 
     const [contacts, setContacts] = useState([]);
 
@@ -29,14 +29,14 @@ const ContactList = () => {
     
     useEffect(() => {
         getData();
-    }, []);
+    }, [chat]);
 
     return(
         <MyContactList>
             {
                 contacts.map( item => {
                     const {Passive, UserName, ProfilePhotoSrc="637981738299538287_ProPhoto2.png", Time="12:00", Message="Message...", NOU="99"} = item
-                    return <Contact key={Passive} UserName={UserName} ProfilePhotoSrc={ProfilePhotoSrc} Time={Time} Message={Message} NOU={NOU}/>
+                    return <Contact key={Passive} ContactName={UserName} ProfilePhotoSrc={ProfilePhotoSrc} Time={Time} Message={Message} NOU={NOU} setChat={setChat} User={User} setReceiver={setReceiver} chat={chat}/>
                 })
             }
         </MyContactList>
