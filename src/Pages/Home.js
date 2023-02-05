@@ -41,9 +41,10 @@ export default function Home() {
 
     useEffect(() => {
         if (connection) {
+            console.log("connection = " + connection);
             connection.start()
                 .then(result => {
-                    console.log('Connected!  Connection ID: ' + connection.connectionId);
+                    console.log('Connected!  Connection ID: ' + connection.connectionId+result);
     
                 }).then(() => {
                         fetch(process.env.REACT_APP_API+'chat/AddConnectionId', { 
@@ -56,39 +57,43 @@ export default function Home() {
                     }
                 )
                 .catch(e => console.log('Connection failed: ', e));
-                
 
+                connection.off('ReceiveMessage');
+
+                connection.on('ReceiveMessage', message => {
+                    const jsonMessage = JSON.stringify(message.user).replaceAll('"', ''); //{"user":"XXX","receiver":"XXX","message":"XXX"}
+                    console.log("me = "+user + " , sender = " + jsonMessage + " , talker = " + receiver.ReceiverName + " , boolean = "+(jsonMessage===receiver.ReceiverName || jsonMessage===user).toString())
+                    if(jsonMessage===receiver.ReceiverName || jsonMessage===user){
+        
+                        if(jsonMessage===receiver.ReceiverName) {
+                            setIsReaded(true)
+                        };
+                        
+                        const tempMessage = {
+                            User: jsonMessage===receiver.ReceiverName ? user : receiver.ReceiverName,
+                            Receiver: jsonMessage===receiver.ReceiverName ? receiver.ReceiverName : user,
+                            Message: ''
+                        }
+                        fetch(process.env.REACT_APP_API+'chat/GetChatRecord', {           
+                            method: 'POST', 
+                            body: JSON.stringify(tempMessage),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(res => res.json())
+                        .then(data => setChat(data))
+                    }
+        
+                });
         }
     }, [connection, receiver]);
 
-    if (connection) {
-        connection.on('ReceiveMessage', message => {
-            const jsonMessage = JSON.stringify(message.user).replaceAll('"', ''); //{"user":"XXX","receiver":"XXX","message":"XXX"}
-
-            if(jsonMessage===receiver.ReceiverName || jsonMessage===user){
-
-                if(jsonMessage===receiver.ReceiverName) {
-                    setIsReaded(true)
-                };
-                
-                const tempMessage = {
-                    User: jsonMessage===receiver.ReceiverName ? user : receiver.ReceiverName,
-                    Receiver: jsonMessage===receiver.ReceiverName ? receiver.ReceiverName : user,
-                    Message: ''
-                }
-                fetch(process.env.REACT_APP_API+'chat/GetChatRecord', {           
-                    method: 'POST', 
-                    body: JSON.stringify(tempMessage),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(res => res.json())
-                .then(data => setChat(data))
-            }
-
-        });
-    }
+    useEffect(() => {
+        if (connection) {
+        
+        }
+    })
 
     if (!token) {
         return <HashRouter><Login setToken={setToken} setUser={setUser} setConnection={setConnection}/></HashRouter>

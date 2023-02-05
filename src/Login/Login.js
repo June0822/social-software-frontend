@@ -48,7 +48,7 @@ export default function Login({ setToken, setUser, setConnection}) {
             setToken(token);
         }
         const newConnection = new HubConnectionBuilder()
-            .withUrl('https://localhost:7248/chatHub')
+            .withUrl(process.env.REACT_APP_ROOT_PATH+'chatHub')
             .withAutomaticReconnect()
             .build();
 
